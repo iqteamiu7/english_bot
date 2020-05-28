@@ -1,4 +1,5 @@
 import json
+import copy
 
 import database_query as db
 import resourses as res
@@ -52,13 +53,13 @@ def get_learned_words(chat_id, max_word_count = 10):
     statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
     topic = get_user_active_topic(chat_id)
 
-    testing_words = res.type_testing_words.copy()
+    testing_words = copy.deepcopy(res.type_testing_words)
     if topic in statistics:
         for dictionary in statistics[topic]:
             if len(testing_words["testing_data"]) >= max_word_count:
                 break
 
-            item = res.type_testing_words_data.copy()
+            item = copy.deepcopy(res.type_testing_words_data)
             item['ew'] = dictionary['ew']
             item['rw'] = dictionary['rw']
 
