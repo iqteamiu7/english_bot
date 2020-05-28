@@ -19,5 +19,10 @@ class Emoji:
     tea_cap = _tea_cap
     finger_down = _finger_down
 
+class Status:
+    idle = "idle"
+    learning = "learning"
+    testing = "lesting"
+
 if __name__ == "__main__":
     print("This is package file")
