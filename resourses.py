@@ -24,5 +24,8 @@ class Status:
     learning = "learning"
     testing = "lesting"
 
+type_testing_words = {'current_index': 0, 'testing_data': []}
+type_testing_words_data = {'ew': 'dummy', 'rw': 'заглушка', 'iactc': None}
+
 if __name__ == "__main__":
     print("This is package file")
