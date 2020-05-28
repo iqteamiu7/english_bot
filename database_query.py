@@ -15,13 +15,13 @@ def add_new_user(chat_id, name, topic):
             name,
             topic,
             res.Status.idle,
-            '[]',
+            '{}',
             '{}'
             ))
     except sqlite3.DatabaseError as err:
         print("Error: ", err)
     else:
-        cursor.commit()
+        conn.commit()
 
 def search_user(chat_id):
     try:
@@ -55,6 +55,8 @@ def update_learned_words(chat_id, new_value):
                 (new_value, chat_id))
     except sqlite3.DatabaseError as err:
         print("Error: ", err)
+    else:
+        conn.commit()
 
 def get_all_topics():
     try:

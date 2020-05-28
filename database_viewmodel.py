@@ -1,6 +1,7 @@
 import json
 
 import database_query as db
+import resourses as res
 
 def connect_database():
     db.connect_database()
@@ -23,7 +24,7 @@ def add_new_user(chat_id, name):
     return True
 
 def is_user_exists(chat_id):
-    if db.search_user == []:
+    if db.search_user(chat_id) == []:
         return False
     return True
 
@@ -35,7 +36,8 @@ def change_user_status(chat_id, new_status):
 
 def get_all_topics():
     topics = db.get_all_topics()
-    return topics
+    res = [i[0] for i in topicst]
+    return res
 
 def change_user_selected_topic(chat_id, new_topic_name):
     pass
@@ -60,7 +62,7 @@ def get_learned_words(chat_id, max_word_count = 10):
             item['ew'] = dictionary['ew']
             item['rw'] = dictionary['rw']
 
-            testing_words["testing_data"].apped(item)
+            testing_words["testing_data"].append(item)
 
     return testing_words
 
@@ -81,7 +83,10 @@ def update_learned_words(chat_id, type_testing_words):
                 elif word_data['iactc'] == False:
                     word_stat['aact'] = int(word_stat['aact']) + 1
                 break
+
     statistics[topic] = words_stat
+    str_stat = json.dumps(statistics)
+    db.update_learned_words(chat_id, str_stat)
 
     return True
 
