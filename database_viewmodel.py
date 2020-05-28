@@ -30,7 +30,10 @@ def is_user_exists(chat_id):
     return True
 
 def delete_user(chat_id):
-    pass
+    if is_user_exists(chat_id) != True:
+        return False
+    db.delete_line(chat_id, 'users')
+    return True 
 
 def change_user_status(chat_id, new_status):
     pass
@@ -41,7 +44,10 @@ def get_all_topics():
     return res
 
 def change_user_selected_topic(chat_id, new_topic_name):
-    pass
+    if is_user_exists(chat_id) and new_topic_name in get_all_topics():
+        db.change_user_topic(chat_id, new_topic_name)
+        return True
+    return False
 
 def get_unlearned_words(chat_id, max_word_count = 10):
     pass

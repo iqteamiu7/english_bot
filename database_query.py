@@ -65,3 +65,22 @@ def get_all_topics():
         return topics
     except sqlite3.DatabaseError as err:
         print("Error: ", err)
+
+def delete_line(chat_id, table):
+    try:
+        if table == 'users':
+            cursor.execute("DELETE FROM users WHERE _chat_id = ?", (chat_id,))
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
+    else:
+        conn.commit()
+
+def change_user_topic(chat_id, topic_name):
+    try:
+        cursor.execute("UPDATE users SET _active_topic = ? WHERE _chat_id = ?", (
+            topic_name,
+            chat_id))
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
+    else:
+        conn.commit()
