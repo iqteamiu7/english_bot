@@ -32,7 +32,8 @@ def change_user_status(chat_id, new_status):
     pass
 
 def get_all_topics():
-    pass
+    topics = db.get_all_topics()
+    return topics
 
 def change_user_selected_topic(chat_id, new_topic_name):
     pass

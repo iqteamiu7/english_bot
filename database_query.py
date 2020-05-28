@@ -31,3 +31,10 @@ def search_user(chat_id):
     else:
         return cursor.fetchall()
 
+def get_all_topics():
+    try:
+        cursor.execute("SELECT DISTINCT _topic FROM words")
+        topics = cursor.fetchall()
+        return topics
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
