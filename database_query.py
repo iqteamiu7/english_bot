@@ -55,3 +55,11 @@ def update_learned_words(chat_id, new_value):
                 (new_value, chat_id))
     except sqlite3.DatabaseError as err:
         print("Error: ", err)
+
+def get_all_topics():
+    try:
+        cursor.execute("SELECT DISTINCT _topic FROM words")
+        topics = cursor.fetchall()
+        return topics
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
