@@ -84,3 +84,13 @@ def change_user_topic(chat_id, topic_name):
         print("Error: ", err)
     else:
         conn.commit()
+
+def change_user_status(chat_id, new_status):
+    try:
+        cursor.execute("UPDATE users SET _status = ? WHERE _chat_id = ?", (
+            new_status,
+            chat_id))
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
+    else:
+        conn.commit()

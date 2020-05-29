@@ -36,7 +36,11 @@ def delete_user(chat_id):
     return True 
 
 def change_user_status(chat_id, new_status):
-    pass
+    r = res.Status()
+    if is_user_exists(chat_id) and new_status in r.get_status_types():
+        db.change_user_status(chat_id, new_status)
+        return True
+    return False
 
 def get_all_topics():
     topics = db.get_all_topics()
