@@ -33,6 +33,8 @@ def delete_user(chat_id):
     if is_user_exists(chat_id) != True:
         return False
     db.delete_line(chat_id, 'users')
+    if is_user_exists(chat_id):
+        return False
     return True 
 
 def change_user_status(chat_id, new_status):

@@ -5,7 +5,7 @@ import resourses as res
 def connect_database():
     global conn
     global cursor
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect("database.db", check_same_thread = False)
     cursor = conn.cursor()
 
 def add_new_user(chat_id, name, topic):
