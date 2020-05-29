@@ -86,9 +86,8 @@ def delete_line(chat_id, table):
 
 def change_user_topic(chat_id, topic_name):
     try:
-        cursor.execute("UPDATE users SET _active_topic = ? WHERE _chat_id = ?", (
-            topic_name,
-            chat_id))
+        cursor.execute("UPDATE users SET _active_topic = ? WHERE _chat_id = ?",
+                (topic_name, chat_id))
     except sqlite3.DatabaseError as err:
         print("Error: ", err)
     else:
@@ -106,8 +105,9 @@ def change_user_status(chat_id, new_status):
 
 def get_topic_words(topic_name):
     try:
-        cursor.execute("SELECT _eng_word, _ru_word FROM words WHERE _topic = ?",
-                       (topic_name,))
+        cursor.execute(
+                "SELECT _eng_word, _ru_word FROM words WHERE _topic = ?",
+                (topic_name,))
     except sqlite3.DatabaseError as err:
         print("Error: ", err)
         return []

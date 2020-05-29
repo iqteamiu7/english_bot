@@ -44,7 +44,7 @@ def change_user_status(chat_id, new_status):
 
 def get_all_topics():
     topics = db.get_all_topics()
-    res = [i[0] for i in topicst]
+    res = [i[0] for i in topics]
     return res
 
 def change_user_selected_topic(chat_id, new_topic_name):
@@ -53,7 +53,7 @@ def change_user_selected_topic(chat_id, new_topic_name):
         return True
     return False
 
-def get_unlearned_words(chat_id, max_word_count = 10):
+def get_unlearned_words(chat_id, max_word_count = 100):
     statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
     topic = get_user_active_topic(chat_id)
     all_topic_words = db.get_topic_words(topic)
@@ -61,6 +61,7 @@ def get_unlearned_words(chat_id, max_word_count = 10):
     learned_words = []
     for i in range(len(statistics[topic])):
         learned_words.append(statistics[topic][i]['ew'])
+
     if topic in statistics:
         dictionary = []
         words_counter = 0
@@ -68,9 +69,11 @@ def get_unlearned_words(chat_id, max_word_count = 10):
             if i >= max_word_count:
                 break
             if all_topic_words[i][0] not in learned_words:
-                new_word = ([['ew', all_topic_words[i][0]],
+                new_word = ([
+                            ['ew', all_topic_words[i][0]],
                             ['rw', all_topic_words[i][1]],
-                            ['il', 'None']])
+                            ['il', 'None']
+                            ])
                 dictionary.append(dict(new_word))
                 
         return dict([['current_index', 0],
@@ -78,9 +81,11 @@ def get_unlearned_words(chat_id, max_word_count = 10):
     else:
         dictionary = []
         for i in range(max_word_count):
-            new_word = ([['ew', all_topic_words[0]],
-                            ['rw', all_topic_words[1]],
-                            ['il', 'None']])
+            new_word = ([
+                    ['ew', all_topic_words[0]],
+                    ['rw', all_topic_words[1]],
+                    ['il', 'None']
+                    ])
             dictionary.append(dict(new_word))
         return dict([['current_index', 0],
                       ['learning_data', dictionary]])
@@ -100,7 +105,7 @@ def add_learned_words(chat_id, learning_words):
     db.update_learned_words(chat_id, json.dumps(statistics))
     return True
 
-def get_learned_words(chat_id, max_word_count = 10):
+def get_learned_words(chat_id, max_word_count = 100):
     statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
     topic = get_user_active_topic(chat_id)
     
