@@ -19,5 +19,17 @@ class Emoji:
     tea_cap = _tea_cap
     finger_down = _finger_down
 
+class Status:
+    idle = "idle"
+    learning = "learning"
+    testing = "testing"
+
+    def get_status_types(self):
+        temp = [self.idle, self.learning, self.testing]
+        return temp
+
+type_testing_words = {'current_index': 0, 'testing_data': []}
+type_testing_words_data = {'ew': 'dummy', 'rw': 'заглушка', 'iactc': None}
+
 if __name__ == "__main__":
     print("This is package file")

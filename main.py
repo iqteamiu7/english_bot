@@ -1,6 +1,7 @@
 import telebot
 from telebot import types
 
+import database_viewmodel as db_vm
 import command
 import learning
 import testing
@@ -9,6 +10,8 @@ from resourses import Emoji
 from my_token import TOKEN
 # Enter your token here: TOKEN = "SOME VALUE"
 bot = telebot.TeleBot(TOKEN)
+
+db_vm.connect_database()
 
 class Menu:
     _learn = Emoji.learn + " Start learning"
