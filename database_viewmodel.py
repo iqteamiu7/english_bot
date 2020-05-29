@@ -74,11 +74,8 @@ def get_unlearned_words(chat_id, max_word_count = 10):
                 dictionary.append(dict(new_word))
                 
         return dict([['current_index', 0],
-                      ['learning_data', dictionary]])
-           
-            
+                      ['learning_data', dictionary]]) 
     else:
-        # случай, когда выбран новый топик и его нет в статистике
         dictionary = []
         for i in range(max_word_count):
             new_word = ([['ew', all_topic_words[0]],
@@ -88,8 +85,20 @@ def get_unlearned_words(chat_id, max_word_count = 10):
         return dict([['current_index', 0],
                       ['learning_data', dictionary]])
 
-def add_learned_words(chat_id, type_learning_words):
-    pass
+def add_learned_words(chat_id, learning_words):
+    if not is_user_exists(chat_id):
+        return False
+    statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
+    topic = get_user_active_topic(chat_id)
+    
+    learned_words = statistics[topic]
+    for word in learning_words['learning_data']:
+        del word['il']
+        word.update(dict([['cact',0],['aact',0]]))
+        learned_words.append(word)
+    statistics[topic] = learned_words
+    db.update_learned_words(chat_id, json.dumps(statistics))
+    return True
 
 def get_learned_words(chat_id, max_word_count = 10):
     statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
