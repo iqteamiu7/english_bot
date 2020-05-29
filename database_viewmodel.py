@@ -54,7 +54,39 @@ def change_user_selected_topic(chat_id, new_topic_name):
     return False
 
 def get_unlearned_words(chat_id, max_word_count = 10):
-    pass
+    statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
+    topic = get_user_active_topic(chat_id)
+    all_topic_words = db.get_topic_words(topic)
+
+    learned_words = []
+    for i in range(len(statistics[topic])):
+        learned_words.append(statistics[topic][i]['ew'])
+    if topic in statistics:
+        dictionary = []
+        words_counter = 0
+        for i in range(len(all_topic_words)):
+            if i >= max_word_count:
+                break
+            if all_topic_words[i][0] not in learned_words:
+                new_word = ([['ew', all_topic_words[i][0]],
+                            ['rw', all_topic_words[i][1]],
+                            ['il', 'None']])
+                dictionary.append(dict(new_word))
+                
+        return dict([['current_index', 0],
+                      ['learning_data', dictionary]])
+           
+            
+    else:
+        # случай, когда выбран новый топик и его нет в статистике
+        dictionary = []
+        for i in range(max_word_count):
+            new_word = ([['ew', all_topic_words[0]],
+                            ['rw', all_topic_words[1]],
+                            ['il', 'None']])
+            dictionary.append(dict(new_word))
+        return dict([['current_index', 0],
+                      ['learning_data', dictionary]])
 
 def add_learned_words(chat_id, type_learning_words):
     pass
@@ -62,7 +94,7 @@ def add_learned_words(chat_id, type_learning_words):
 def get_learned_words(chat_id, max_word_count = 10):
     statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
     topic = get_user_active_topic(chat_id)
-
+    
     testing_words = copy.deepcopy(res.type_testing_words)
     if topic in statistics:
         for dictionary in statistics[topic]:

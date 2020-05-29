@@ -94,3 +94,15 @@ def change_user_status(chat_id, new_status):
         print("Error: ", err)
     else:
         conn.commit()
+
+def get_topic_words(topic_name):
+    try:
+        cursor.execute("SELECT _eng_word, _ru_word FROM words WHERE _topic = ?",
+                       (topic_name,))
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
+        return []
+    else:
+        return cursor.fetchall()
+
+        

@@ -22,7 +22,11 @@ class Emoji:
 class Status:
     idle = "idle"
     learning = "learning"
-    testing = "lesting"
+    testing = "testing"
+
+    def get_status_types(self):
+        temp = [self.idle, self.learning, self.testing]
+        return temp
 
 type_testing_words = {'current_index': 0, 'testing_data': []}
 type_testing_words_data = {'ew': 'dummy', 'rw': 'заглушка', 'iactc': None}
