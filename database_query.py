@@ -114,4 +114,12 @@ def get_topic_words(topic_name):
     else:
         return cursor.fetchall()
 
-        
+def change_user_activity(chat_id, new_activity):
+    try:
+        cursor.execute("UPDATE users SET _activity = ? WHERE _chat_id = ?", (
+            new_activity,
+            chat_id))
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
+    else:
+        conn.commit()

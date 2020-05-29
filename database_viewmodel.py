@@ -134,7 +134,11 @@ def update_learned_words(chat_id, type_testing_words):
     return True
 
 def update_activity(chat_id, new_value):
-    pass
+    if is_user_exists(chat_id):
+        db.change_user_activity(chat_id, new_value)
+        return True
+    else:
+        return False
 
 def get_activity(chat_id):
     activity = json.loads(db.get_user_activity(chat_id)[0][0])
