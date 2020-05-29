@@ -137,7 +137,8 @@ def update_activity(chat_id, new_value):
     pass
 
 def get_activity(chat_id):
-    pass
+    activity = json.loads(db.get_user_activity(chat_id)[0][0])
+    return activity
 
 def get_user_active_topic(chat_id):
     return db.get_user_active_topic(chat_id)[0][0]

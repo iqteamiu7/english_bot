@@ -40,6 +40,15 @@ def get_user_statistics(chat_id):
     else:
         return cursor.fetchall()
 
+def get_user_activity(chat_id):
+    try:
+        cursor.execute("SELECT _activity FROM users WHERE _chat_id == ?",
+                (chat_id,))
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
+    else:
+        return cursor.fetchall()
+
 def get_user_active_topic(chat_id):
     try:
         cursor.execute("SELECT _active_topic FROM users WHERE _chat_id == ?",
