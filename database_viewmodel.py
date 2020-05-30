@@ -22,6 +22,7 @@ def add_new_user(chat_id, name):
 
     topic = get_all_topics()[0]
     db.add_new_user(chat_id, name, topic)
+    init_emply_topic(chat_id)
     return True
 
 def is_user_exists(chat_id):
@@ -52,10 +53,11 @@ def get_all_topics():
 def change_user_selected_topic(chat_id, new_topic_name):
     if is_user_exists(chat_id) and new_topic_name in get_all_topics():
         db.change_user_topic(chat_id, new_topic_name)
+        init_emply_topic(chat_id)
         return True
     return False
 
-def get_unlearned_words(chat_id, max_word_count = 100):
+def get_unlearned_words(chat_id, max_word_count = 5):
     statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
     topic = get_user_active_topic(chat_id)
     all_topic_words = db.get_topic_words(topic)
@@ -68,7 +70,7 @@ def get_unlearned_words(chat_id, max_word_count = 100):
         dictionary = []
         words_counter = 0
         for i in range(len(all_topic_words)):
-            if i >= max_word_count:
+            if len(dictionary) >= max_word_count:
                 break
             if all_topic_words[i][0] not in learned_words:
                 new_word = ([
@@ -100,9 +102,10 @@ def add_learned_words(chat_id, learning_words):
     
     learned_words = statistics[topic]
     for word in learning_words['learning_data']:
-        del word['il']
-        word.update(dict([['cact',0],['aact',0]]))
-        learned_words.append(word)
+        if word['il'] == True:
+            del word['il']
+            word.update(dict([['cact',0],['aact',0]]))
+            learned_words.append(word)
     statistics[topic] = learned_words
     db.update_learned_words(chat_id, json.dumps(statistics))
     return True
@@ -162,6 +165,17 @@ def get_activity(chat_id):
 
 def get_user_active_topic(chat_id):
     return db.get_user_active_topic(chat_id)[0][0]
+
+def init_emply_topic(chat_id):
+    topic = get_user_active_topic(chat_id)
+    statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
+
+    if topic in statistics:
+        print("Topic inited already")
+        return False
+
+    statistics[topic] = []
+    db.update_learned_words(chat_id, json.dumps(statistics))
 
 if __name__ == "__main__":
     print("This is package file\n")

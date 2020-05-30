@@ -8,6 +8,7 @@ class Emoji:
     _victory_hand = u'\U0000270C'
     _tea_cap = u'\U00002615'
     _finger_down = u'\U0001F447'
+    _exclamation_symbol = u'\U00002757'
 
     learn = _open_book
     test = _memo
@@ -18,6 +19,7 @@ class Emoji:
     hello = _victory_hand
     tea_cap = _tea_cap
     finger_down = _finger_down
+    exclamation = _exclamation_symbol
 
 class Status:
     idle = "idle"
@@ -28,8 +30,12 @@ class Status:
         temp = [self.idle, self.learning, self.testing]
         return temp
 
+type_learning_words = {'current_index': 0, 'learning_data': []}
+type_learning_words_data = {'ew':'cat', 'rw':'кошка',  'il':True},
+
+
 type_testing_words = {'current_index': 0, 'testing_data': []}
 type_testing_words_data = {'ew': 'dummy', 'rw': 'заглушка', 'iactc': None}
 
 if __name__ == "__main__":
-    print("This is package file")
+    print("This is package file\n")

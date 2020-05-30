@@ -123,3 +123,6 @@ def change_user_activity(chat_id, new_activity):
         print("Error: ", err)
     else:
         conn.commit()
+
+if __name__ == "__main__":
+    print("This is package file\n")
