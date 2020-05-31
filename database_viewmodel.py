@@ -152,6 +152,13 @@ def update_learned_words(chat_id, type_testing_words):
 
     return True
 
+def get_user_statistics(chat_id):
+    if is_user_exists(chat_id):
+        stat = db.get_user_statistics(chat_id)[0][0]
+        stat = json.loads(stat)
+
+        return stat
+
 def update_activity(chat_id, new_value):
     if is_user_exists(chat_id):
         db.change_user_activity(chat_id, new_value)
@@ -176,6 +183,9 @@ def init_emply_topic(chat_id):
 
     statistics[topic] = []
     db.update_learned_words(chat_id, json.dumps(statistics))
+
+def get_topic_size(topic):
+    return db.get_num_of_words_in_topic(topic)
 
 if __name__ == "__main__":
     print("This is package file\n")

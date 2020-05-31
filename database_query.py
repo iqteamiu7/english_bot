@@ -124,5 +124,9 @@ def change_user_activity(chat_id, new_activity):
     else:
         conn.commit()
 
+def get_num_of_words_in_topic(topic):
+    cursor.execute(f"select count(*) from words where _topic = '{topic}'")
+    return cursor.fetchall()[0][0]
+
 if __name__ == "__main__":
     print("This is package file\n")

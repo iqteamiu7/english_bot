@@ -9,6 +9,8 @@ class Emoji:
     _tea_cap = u'\U00002615'
     _finger_down = u'\U0001F447'
     _exclamation_symbol = u'\U00002757'
+    _animal = u'\U0001f98C'
+    _food = u'\U0001f37d'
 
     learn = _open_book
     test = _memo
@@ -20,6 +22,8 @@ class Emoji:
     tea_cap = _tea_cap
     finger_down = _finger_down
     exclamation = _exclamation_symbol
+    topic_to_emoji = {'animal': _animal, 'food': _food}
+
 
 class Status:
     idle = "idle"

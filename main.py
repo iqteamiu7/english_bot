@@ -6,11 +6,19 @@ import learning
 import testing
 from resourses import Emoji
 import main_model as m_m
-from my_token import TOKEN
-# Enter your token here: TOKEN = "SOME VALUE"
+#PLEASE INSERT YOUR TOKEN HERE
 m_m.bot = telebot.TeleBot(TOKEN)
 
 db_vm.connect_database()
+
+
+@m_m.bot.callback_query_handler(func=lambda query: True)
+def callback_query_topic(query):
+    topic = query.data[:query.data.index('_')]
+    user_id = command.get_user_id_from_query(query)
+
+    db_vm.change_user_selected_topic(user_id, topic)
+    m_m.bot.answer_callback_query(query.id, "Тема сменена на " + topic)
 
 @m_m.bot.message_handler(commands=['start', 'help', 'hide', 'show',
         'delete_me', 'stop_testing'])
@@ -40,17 +48,17 @@ def menu_buttons_listener(message):
         m_m.bot.send_message(chat_id, "Register first\n/start")
         return
 
+
     # Main menu
     if message.text == m_m.Menu._learn:
         learning.start_learning(message)
     elif message.text == m_m.Menu._test:
         m_m.Menu.show_tests(chat_id)
     elif message.text == m_m.Menu._topic:
-        m_m.bot.send_message(chat_id, "Topic changing is not implemented yet")
-        # TODO: call command.change_topic(bot, chat_id)
+        command.on_topic_change(chat_id)
     elif message.text == m_m.Menu._statistics:
-        m_m.bot.send_message(chat_id, "Statistics is not implemented yet")
-        # TODO: call command.show_statistics(bot, chat_id)
+        command.on_show_statistics(chat_id)
+
 
     # Test menu
     elif message.text == m_m.Menu._active_test:

@@ -25,7 +25,7 @@ class Menu:
 
         markup.add(learn_button, test_button, topic_button, statistics_button)
         return markup
- 
+
     @staticmethod
     def show_main(chat_id):
         markup = Menu.get_main_markup()
