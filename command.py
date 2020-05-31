@@ -11,6 +11,8 @@ def on_start(message):
 
     first_name = message.from_user.first_name
     last_name = message.from_user.last_name
+    if first_name == None: first_name = "stranger"
+    if last_name == None: last_name = ""
     full_name = first_name + " " + last_name
 
     m_m.bot.send_message(chat_id, "Hello, " + first_name + ' ' + Emoji.hello)

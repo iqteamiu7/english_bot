@@ -12,9 +12,14 @@ m_m.bot = telebot.TeleBot(TOKEN)
 
 db_vm.connect_database()
 
-@m_m.bot.message_handler(commands=['start', 'help', 'hide', 'show', 'delete_me'])
+@m_m.bot.message_handler(commands=['start', 'help', 'hide', 'show',
+        'delete_me', 'stop_testing'])
 def commands_listener(message):
     chat_id = message.chat.id
+    if not db_vm.is_user_exists(chat_id) and message.text != "/start":
+        m_m.bot.send_message(chat_id, "Register first\n/start")
+        return
+
     if message.text.find("/start") == 0:
         command.on_start(message)
     elif message.text.find("/help") == 0:
@@ -25,10 +30,16 @@ def commands_listener(message):
         m_m.Menu.show_main(chat_id)
     elif message.text.find("/delete_me") == 0:
         command.on_delete_me(chat_id)
+    elif message.text.find("/stop_testing") == 0:
+        m_m.bot.reply_to(message, "This command words only during testing")
 
 @m_m.bot.message_handler(func = lambda m: True)
 def menu_buttons_listener(message):
     chat_id = message.chat.id
+    if not db_vm.is_user_exists(chat_id):
+        m_m.bot.send_message(chat_id, "Register first\n/start")
+        return
+
     # Main menu
     if message.text == m_m.Menu._learn:
         learning.start_learning(message)
