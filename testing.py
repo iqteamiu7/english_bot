@@ -4,7 +4,7 @@ import telebot
 
 import database_viewmodel as db_vm
 import main_model as m_m
-from resourses import Emoji
+from resourses import Emoji, Status
 
 EMOJI1 = '\U00002705' #галочка
 EMOJI2 = '\U0000274C' #крестик
@@ -51,6 +51,7 @@ def show_answer(message, dic, cur_i, lang): #демонстрация ответ
 
 def start_testing(message): #начало тестирования
     chat_id = message.chat.id
+    db_vm.change_user_status(message.chat.id, Status.testing)
 
     dic = db_vm.get_learned_words(message.chat.id)
     print_dic(dic)
@@ -68,6 +69,7 @@ def start_testing(message): #начало тестирования
         m_m.bot.register_next_step_handler(message, testing, dic, 0)
     else:
         m_m.bot.send_message(chat_id, NW)
+        db_vm.change_user_status(message.chat.id, Status.idle)
 
 def print_dic(dic):
     print("currect_index =", dic["current_index"])
@@ -124,10 +126,12 @@ def testing(message, dic, lang): #тестирование
             m_m.bot.register_next_step_handler(message, testing, dic, lang)
         else:
             db_vm.update_learned_words(message.chat.id, dic)
+            db_vm.change_user_status(message.chat.id, Status.idle)
             markup = m_m.Menu.get_main_markup()
             m_m.bot.send_message(message.chat.id, G_J, reply_markup = markup)
     if ans == '/stop_testing':
         db_vm.update_learned_words(message.chat.id, dic)
+        db_vm.change_user_status(message.chat.id, Status.idle)
         markup = m_m.Menu.get_main_markup()
         m_m.bot.send_message(message.chat.id, C_L, reply_markup = markup)
 

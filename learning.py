@@ -2,7 +2,7 @@ import telebot
 
 import database_viewmodel as db_vm
 import main_model as m_m
-from resourses import Emoji
+from resourses import Emoji, Status
 
 LEMOJI1 = '\U000027A1' #дальше
 LEMOJI2 = '\U0001F6AB' # стоп
@@ -35,6 +35,7 @@ def update_dictionary(cur_i, dic, chat_id): #обновление словаря
     return dic
 
 def start_learning(message): #начало обучения, приветствие
+    db_vm.change_user_status(message.chat.id, Status.learning)
     u_m = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
     u_m.add(telebot.types.KeyboardButton(text=BTN_START))
     dic = db_vm.get_unlearned_words(message.chat.id)
@@ -77,6 +78,7 @@ def give_words(message, dic): #обучение
         m_m.bot.register_next_step_handler(message, give_words, dic)
     else:
         db_vm.add_learned_words(message.chat.id, dic)
+        db_vm.change_user_status(message.chat.id, Status.idle)
         u_m = m_m.Menu.get_main_markup()
 
         if cur_i >= len(dic.get(L_D)):
