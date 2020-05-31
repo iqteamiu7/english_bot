@@ -18,6 +18,7 @@ L_D = 'learning_data'
 C_I = 'current_index'
 T_L = LEMOJI3 + ' Thats all!'
 S_Y = 'See you next time!'
+MES_ER = Emoji.exclamation + 'please, send me only text messages'
 
 #dic - словарь
 #cur_i - current_index
@@ -54,6 +55,11 @@ def print_dic(dic):
 
 def give_words(message, dic): #обучение
     print_dic(dic)
+
+    if type(message.text) != str:
+        m_m.bot.send_message(message.chat.id, MES_ER)
+        m_m.bot.register_next_step_handler(message, give_words, dic)
+        return 'err'
     if message.text[0] == '/':
         m_m.bot.send_message(message.chat.id, Emoji.exclamation +
                 "You can't enter commands during training or testing")

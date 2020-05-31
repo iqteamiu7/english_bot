@@ -19,6 +19,7 @@ WTE = 'What is the english for: '
 G_J = EMOJI3 + ' Thats all, good job!'
 C_L = 'Come again later'
 NW = "You haven't learned a single word in this topic"
+MES_ER = Emoji.exclamation + 'please, send me only text messages' 
 
 #dic - словарь
 #cur_i - current_index
@@ -78,6 +79,13 @@ def print_dic(dic):
 
 def testing(message, dic, lang): #тестирование
     print_dic(dic)
+
+    if type(message.text) == str:
+        ans = message.text.lower()
+    else:
+        m_m.bot.send_message(message.chat.id, MES_ER)
+        m_m.bot.register_next_step_handler(message, testing, dic, lang)
+        return 'err'
 
     if message.text[0] == '/' and message.text.find("/stop_testing") != 0:
         m_m.bot.send_message(message.chat.id, Emoji.exclamation +
