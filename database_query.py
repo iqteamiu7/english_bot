@@ -49,6 +49,15 @@ def get_user_activity(chat_id):
     else:
         return cursor.fetchall()
 
+def get_user_status(chat_id):
+    try:
+        cursor.execute("SELECT _status FROM users WHERE _chat_id == ?",
+                (chat_id,))
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
+    else:
+        return cursor.fetchall()
+
 def get_user_active_topic(chat_id):
     try:
         cursor.execute("SELECT _active_topic FROM users WHERE _chat_id == ?",
@@ -126,7 +135,7 @@ def change_user_activity(chat_id, new_activity):
 
 def get_num_of_words_in_topic(topic):
     cursor.execute(f"select count(*) from words where _topic = '{topic}'")
-    return cursor.fetchall()[0][0]
+    return cursor.fetchall()
 
 if __name__ == "__main__":
     print("This is package file\n")

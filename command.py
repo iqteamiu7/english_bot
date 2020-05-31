@@ -56,18 +56,18 @@ def on_show_statistics(chat_id):
     del stat[active_topic]
 
     msg = \
-        "Текущий топик: %s %s\n\
-Всего слов: %d \n\
-Всего выученно слов: %d\n" % (active_topic.capitalize(), 
+        "Current topic: %s %s\n\
+Number of words in topic: %d \n\
+Number of learned words in topic: %d\n" % (active_topic.capitalize(),
         Emoji.topic_to_emoji[active_topic], num_of_words, count_words)
     stat_msg = [msg]
     for topic in stat.items():
         count_words = len([i for i in topic[1]])
         num_of_words = db_vm.get_topic_size(topic[0])
         msg = \
-            "Топик %s %s\n\
-Всего слов: %d \n\
-Всего выученно слов: %d\n" % (active_topic.capitalize(), 
+                "Topic: %s %s\n\
+Number of words in topic: %d \n\
+Number of learned words in topic: %d\n" % (topic[0].capitalize(),
         Emoji.topic_to_emoji[topic[0]], num_of_words, count_words)
         stat_msg.append(msg)
 
@@ -75,8 +75,9 @@ def on_show_statistics(chat_id):
         m_m.bot.send_message(chat_id, topic)
 
 def on_topic_change(chat_id):
-    m_m.bot.send_message(chat_id, "Выберите тему", 
-            reply_markup=gen_inline_markup(0, chat_id))
+    if db_vm.get_user_status(chat_id) == 'idle':
+        m_m.bot.send_message(chat_id, "Выберите тему", 
+                reply_markup=gen_inline_markup(0, chat_id))
 
 def get_user_id_from_query(query):
     return int(query.data[query.data.index('_') + 1:])

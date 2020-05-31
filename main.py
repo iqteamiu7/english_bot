@@ -4,9 +4,10 @@ import database_viewmodel as db_vm
 import command
 import learning
 import testing
-from resourses import Emoji
+from resourses import Emoji, Status
 import main_model as m_m
-#PLEASE INSERT YOUR TOKEN HERE
+from my_token import TOKEN
+# Enter your token here: TOKEN = "SOME VALUE"
 m_m.bot = telebot.TeleBot(TOKEN)
 
 db_vm.connect_database()
@@ -16,9 +17,13 @@ db_vm.connect_database()
 def callback_query_topic(query):
     topic = query.data[:query.data.index('_')]
     user_id = command.get_user_id_from_query(query)
+    if db_vm.get_user_status(user_id) == Status.idle:
+        db_vm.change_user_selected_topic(user_id, topic)
+        m_m.bot.answer_callback_query(query.id, "Topic was changed on " + topic)
+    else:
+        m_m.bot.answer_callback_query(query.id,
+                "Let's finish with your task for now")
 
-    db_vm.change_user_selected_topic(user_id, topic)
-    m_m.bot.answer_callback_query(query.id, "Тема сменена на " + topic)
 
 @m_m.bot.message_handler(commands=['start', 'help', 'hide', 'show',
         'delete_me', 'stop_testing'])

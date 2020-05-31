@@ -36,7 +36,7 @@ def delete_user(chat_id):
     db.delete_line(chat_id, 'users')
     if is_user_exists(chat_id):
         return False
-    return True 
+    return True
 
 def change_user_status(chat_id, new_status):
     r = res.Status()
@@ -185,7 +185,10 @@ def init_emply_topic(chat_id):
     db.update_learned_words(chat_id, json.dumps(statistics))
 
 def get_topic_size(topic):
-    return db.get_num_of_words_in_topic(topic)
+    return db.get_num_of_words_in_topic(topic)[0][0]
+
+def get_user_status(chat_id):
+    return db.get_user_status(chat_id)[0][0]
 
 if __name__ == "__main__":
     print("This is package file\n")
