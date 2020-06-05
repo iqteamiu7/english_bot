@@ -39,6 +39,15 @@ def get_user_statistics(chat_id):
     else:
         return cursor.fetchall()
 
+def get_ru_word(eng_word):
+    try:
+        cursor.execute("SELECT _ru_word FROM words WHERE _eng_word == ?",
+                (eng_word,))
+    except sqlite3.DatabaseError as err:
+        print("Error: ", err)
+    else:
+        return cursor.fetchall()
+
 def get_user_status(chat_id):
     try:
         cursor.execute("SELECT _status FROM users WHERE _chat_id == ?",
