@@ -10,13 +10,12 @@ def connect_database():
 
 def add_new_user(chat_id, name, topic):
     try:
-        cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)", (
+        cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?, ?)", (
             chat_id,
             name,
             topic,
             res.Status.idle,
             '{}',
-            '{}'
             ))
     except sqlite3.DatabaseError as err:
         print("Error: ", err)
