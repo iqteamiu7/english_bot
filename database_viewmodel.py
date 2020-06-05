@@ -159,17 +159,6 @@ def get_user_statistics(chat_id):
 
         return stat
 
-def update_activity(chat_id, new_value):
-    if is_user_exists(chat_id):
-        db.change_user_activity(chat_id, new_value)
-        return True
-    else:
-        return False
-
-def get_activity(chat_id):
-    activity = json.loads(db.get_user_activity(chat_id)[0][0])
-    return activity
-
 def get_user_active_topic(chat_id):
     return db.get_user_active_topic(chat_id)[0][0]
 
