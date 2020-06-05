@@ -104,25 +104,37 @@ def add_learned_words(chat_id, learning_words):
     for word in learning_words['learning_data']:
         if word['il'] == True:
             del word['il']
+            del word['rw']
             word.update(dict([['cact',0],['aact',0]]))
             learned_words.append(word)
     statistics[topic] = learned_words
     db.update_learned_words(chat_id, json.dumps(statistics))
     return True
 
-def get_learned_words(chat_id, max_word_count = 100):
+def get_word_ranking(word_data):
+    aact = word_data['aact']
+    cact = word_data['cact']
+
+    if 0 == aact:
+        return -2.0
+    else:
+        return cact / aact
+
+def get_learned_words(chat_id, max_word_count = 5):
     statistics = json.loads(db.get_user_statistics(chat_id)[0][0])
     topic = get_user_active_topic(chat_id)
     
     testing_words = copy.deepcopy(res.type_testing_words)
     if topic in statistics:
-        for dictionary in statistics[topic]:
-            if len(testing_words["testing_data"]) >= max_word_count:
-                break
+        topic_stat = statistics[topic]
+        topic_stat.sort(key=get_word_ranking)
+        topic_stat = topic_stat[:max_word_count]
 
+        for dictionary in topic_stat:
             item = copy.deepcopy(res.type_testing_words_data)
-            item['ew'] = dictionary['ew']
-            item['rw'] = dictionary['rw']
+            ew = dictionary['ew']
+            item['ew'] = ew
+            item['rw'] = db.get_ru_word(ew)[0][0]
 
             testing_words["testing_data"].append(item)
 

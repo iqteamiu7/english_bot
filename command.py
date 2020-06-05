@@ -55,21 +55,21 @@ def on_show_statistics(chat_id):
     num_of_words = db_vm.get_topic_size(active_topic)
     del stat[active_topic]
 
-    msg = \
-        "Current topic: %s %s\n\
-Number of words in topic: %d \n\
-Number of learned words in topic: %d\n" % (active_topic.capitalize(),
-        Emoji.topic_to_emoji[active_topic], num_of_words, count_words)
+    msg = """
+Current topic: %s
+Number of learned words: %d
+Number of all words: %d
+""" % (active_topic.capitalize(), count_words, num_of_words)
     stat_msg = [msg]
-    for topic in stat.items():
-        count_words = len([i for i in topic[1]])
-        num_of_words = db_vm.get_topic_size(topic[0])
-        msg = \
-                "Topic: %s %s\n\
-Number of words in topic: %d \n\
-Number of learned words in topic: %d\n" % (topic[0].capitalize(),
-        Emoji.topic_to_emoji[topic[0]], num_of_words, count_words)
-        stat_msg.append(msg)
+#    for topic in stat.items():
+#        count_words = len([i for i in topic[1]])
+#        num_of_words = db_vm.get_topic_size(topic[0])
+#        msg = \
+#                "Topic: %s %s\n\
+#Number of words in topic: %d \n\
+#Number of learned words in topic: %d\n" % (topic[0].capitalize(),
+#        Emoji.topic_to_emoji[topic[0]], num_of_words, count_words)
+#        stat_msg.append(msg)
 
     for topic in stat_msg:
         m_m.bot.send_message(chat_id, topic)
