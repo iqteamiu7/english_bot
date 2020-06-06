@@ -4,14 +4,15 @@ import database_viewmodel as db_vm
 import command
 import learning
 import testing
+import os
 from resourses import Emoji, Status
 import main_model as m_m
-from my_token import TOKEN
-# Enter your token here: TOKEN = "SOME VALUE"
+from flask import Flask, request
+TOKEN = '1236996407:AAHm3wM310KZp7AYUtQabaxtZXLU_quOIi0'
 m_m.bot = telebot.TeleBot(TOKEN)
 
 db_vm.connect_database()
-
+m_m.server = Flask(__name__)
 
 @m_m.bot.callback_query_handler(func=lambda query: True)
 def callback_query_topic(query):
@@ -74,6 +75,23 @@ def menu_buttons_listener(message):
     else:
         m_m.bot.send_message(chat_id, "Hmmmm... I don\'t understand")
 
+
 m_m.bot.enable_save_next_step_handlers(delay=2)
 m_m.bot.load_next_step_handlers()
-m_m.bot.polling()
+
+
+@m_m.server.route('/' + TOKEN, methods=['POST'])
+def getMessage():
+    m_m.bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
+
+
+@m_m.server.route("/")
+def webhook():
+    m_m.bot.remove_webhook()
+    m_m.bot.set_webhook(url='https://your_heroku_project.com/' + TOKEN)
+    return "!", 200
+
+
+if __name__ == "__main__":
+    m_m.server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
