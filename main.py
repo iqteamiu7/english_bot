@@ -89,7 +89,7 @@ def getMessage():
 @m_m.server.route("/")
 def webhook():
     m_m.bot.remove_webhook()
-    m_m.bot.set_webhook(url='https://your_heroku_project.com/' + TOKEN)
+    m_m.bot.set_webhook(url='https://iq7-team-bot.herokuapp.com/' + TOKEN)
     return "!", 200
 
 
